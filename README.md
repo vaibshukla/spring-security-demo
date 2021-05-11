@@ -3,5 +3,7 @@ The spring security demo project, trying out various configuration
 
 
 ## Branch Details 
-    * override-default-username-password : 
-        In this will provide the UserDetailService Bean and Create the User From InMemoryUserDetailManager 
+    ** userdetailservice-implementation : 
+    
+    Created the UserDetailsService with backed by database. Now providing the username and pasword from the database. 
+
