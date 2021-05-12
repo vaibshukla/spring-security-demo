@@ -5,9 +5,9 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = "otp")
 @Data
-public class User {
+public class Otp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,9 +15,5 @@ public class User {
 
     private String username;
 
-    private String password;
-
-    private Boolean enabled;
-
-
+    private String otp;
 }
