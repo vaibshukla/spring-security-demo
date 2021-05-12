@@ -1,25 +1,20 @@
 package com.learning.springsecurity.springsecuritydemo.entity;
 
+
 import lombok.Data;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = "authorities")
 @Data
-public class User {
+public class Authorities {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     private String username;
 
-
-    private String password;
-
-    private Boolean enabled;
-
-
+    private String authority;
 }

@@ -2,6 +2,13 @@
 The spring security demo project, trying out various configuration
 
 
-## Branch Details 
-    * override-default-username-password : 
-        In this will provide the UserDetailService Bean and Create the User From InMemoryUserDetailManager 
+## Branch Details
+
+    userdetail-manager-pwd-encoder
+
+
+Point to Know 
+* JdbUserDetailManager -  Work with database to manager user, it has predefined implementation.
+    Use the spring provided JdbcUserDetailManager to create the user.
+        
+    

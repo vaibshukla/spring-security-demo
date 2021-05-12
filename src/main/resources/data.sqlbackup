@@ -1,0 +1,6 @@
+
+
+INSERT INTO users(username , password, enabled) VALUES ('vaibhav' , 'test' , true);
+
+INSERT INTO authorities(username , authority) VALUES ('vaibhav' , 'read' );
+INSERT INTO authorities(username , authority) VALUES ('vaibhav' , 'write' );
