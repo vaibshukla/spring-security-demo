@@ -4,11 +4,8 @@ The spring security demo project, trying out various configuration
 
 ## Branch Details
 
-    userdetail-manager-pwd-encoder
+    authentication-provider
 
 
-Point to Know 
-* JdbUserDetailManager -  Work with database to manager user, it has predefined implementation.
-    Use the spring provided JdbcUserDetailManager to create the user.
-        
+
     

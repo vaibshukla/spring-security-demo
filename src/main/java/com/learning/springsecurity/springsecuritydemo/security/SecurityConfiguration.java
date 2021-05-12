@@ -1,47 +1,49 @@
 package com.learning.springsecurity.springsecuritydemo.security;
 
 
-import com.learning.springsecurity.springsecuritydemo.service.JpaUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
-import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
-import javax.sql.DataSource;
+
+import java.util.List;
 
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private DataSource dataSource;
+    @Qualifier(value = "customAuthenticationProvider")
+    private AuthenticationProvider authenticationProvider;
 
     @Bean
-    public UserDetailsManager userDetailsManager() {
-        return new JdbcUserDetailsManager(dataSource);
+    public UserDetailsService userDetailsService() {
+        var inMemoryUserDetailsManager = new InMemoryUserDetailsManager();
+
+        var user1 = User.withUsername("vaibhav")
+                .password("vaibhav")
+                .authorities(List.of(() -> "read"))
+                .build();
+        inMemoryUserDetailsManager.createUser(user1);
+        return inMemoryUserDetailsManager;
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return NoOpPasswordEncoder.getInstance();
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic();
-
-        http.csrf().disable();
-
-        http.headers().frameOptions().disable();
-
-        http.authorizeRequests().antMatchers("/user").permitAll()
-                .antMatchers("/h2-console/**").permitAll()
-                .anyRequest().authenticated();
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authenticationProvider);
     }
 }
 
