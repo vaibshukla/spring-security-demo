@@ -1,6 +1,7 @@
 package com.learning.springsecurity.springsecuritydemo.security.filters;
 
 import com.learning.springsecurity.springsecuritydemo.entity.Otp;
+import com.learning.springsecurity.springsecuritydemo.manager.TokenManager;
 import com.learning.springsecurity.springsecuritydemo.repository.OtpRepository;
 import com.learning.springsecurity.springsecuritydemo.security.authentication.OtpAuthentication;
 import com.learning.springsecurity.springsecuritydemo.security.authentication.UsernamePasswordAuthentication;
@@ -20,7 +21,6 @@ import java.util.Random;
 import java.util.UUID;
 
 
-@Component
 public class TwoFactorAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -28,6 +28,9 @@ public class TwoFactorAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private OtpRepository otpRepository;
+
+    @Autowired
+    private TokenManager tokenManager;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
@@ -50,8 +53,9 @@ public class TwoFactorAuthenticationFilter extends OncePerRequestFilter {
         }else {
             Authentication otpAuthentication =  new OtpAuthentication(username , otp);
             otpAuthentication = authenticationManager.authenticate(otpAuthentication);
-            response.setHeader("token" , UUID.randomUUID().toString());
-            SecurityContextHolder.getContext().setAuthentication(otpAuthentication);
+            var token = UUID.randomUUID().toString();
+            tokenManager.add(token);
+            response.setHeader("token" , token);
         }
 
     }

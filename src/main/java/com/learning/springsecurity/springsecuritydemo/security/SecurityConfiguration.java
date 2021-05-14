@@ -1,8 +1,10 @@
 package com.learning.springsecurity.springsecuritydemo.security;
 
 
+import com.learning.springsecurity.springsecuritydemo.security.filters.TokenAuthenticationFilter;
 import com.learning.springsecurity.springsecuritydemo.security.filters.TwoFactorAuthenticationFilter;
 import com.learning.springsecurity.springsecuritydemo.security.providers.OtpAuthenticationProvider;
+import com.learning.springsecurity.springsecuritydemo.security.providers.TokenAuthenticationProvider;
 import com.learning.springsecurity.springsecuritydemo.security.providers.UsernamePasswordAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -31,8 +33,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private OtpAuthenticationProvider otpAuthenticationProvider;
 
+
     @Autowired
-    private TwoFactorAuthenticationFilter twoFactorAuthenticationFilter;
+    private TokenAuthenticationProvider tokenAuthenticationProvider;
+
+
 
     @Bean
     public UserDetailsManager userDetailsManager() {
@@ -55,13 +60,26 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/user").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated();
-        http.addFilterAt(twoFactorAuthenticationFilter , BasicAuthenticationFilter.class);
+        http.addFilterAt(twoFactorAuthenticationFilter() , BasicAuthenticationFilter.class)
+        .addFilterAfter(tokenAuthenticationFilter() , BasicAuthenticationFilter.class);
+
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(usernamePasswordAuthenticationProvider)
-                .authenticationProvider(otpAuthenticationProvider);
+                .authenticationProvider(otpAuthenticationProvider)
+        .authenticationProvider(tokenAuthenticationProvider);
+    }
+
+    @Bean
+    public TokenAuthenticationFilter tokenAuthenticationFilter() {
+        return new TokenAuthenticationFilter();
+    }
+
+    @Bean
+    public TwoFactorAuthenticationFilter twoFactorAuthenticationFilter() {
+        return new TwoFactorAuthenticationFilter();
     }
 
     @Override
