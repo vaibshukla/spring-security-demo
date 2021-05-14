@@ -32,11 +32,10 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         Authentication a =  new TokenAuthentication(token , null);
         var  authenticate     =   authenticationManager.authenticate(a);
 
-        if (authenticate.isAuthenticated()) {
-            SecurityContextHolder.getContext().setAuthentication(authenticate);
-            filterChain.doFilter(request , response);
-        }
-        throw new BadCredentialsException(" Not a valid token ");
+        SecurityContextHolder.getContext().setAuthentication(authenticate);
+        filterChain.doFilter(request , response);
+
+
     }
 
     @Override
