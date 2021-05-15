@@ -12,7 +12,10 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        super.configure(clients);
+        clients.inMemory()
+                .withClient("App-1")
+                .secret("secret")
+                .scopes("read");
     }
 
     @Override
