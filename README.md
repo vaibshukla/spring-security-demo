@@ -2,13 +2,12 @@
 The spring security demo project, trying out various configuration
 
 
-## Branch Details
+## Branch Details  - 
+    cors-demo
 
-    userdetail-manager-pwd-encoder
+### Headers for CORS 
 
+* Access-Control-Allow-Origin 
 
-Point to Know 
-* JdbUserDetailManager -  Work with database to manager user, it has predefined implementation.
-    Use the spring provided JdbcUserDetailManager to create the user.
         
     

@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -19,6 +20,13 @@ public class TestController {
     public String changeResourceState() {
         log.info(" Change resource ");
         return "main.html";
+    }
+
+    @PostMapping(path = {"/" , "/test"})
+    @ResponseBody
+    public String test() {
+
+        return "Test Response";
     }
 
 }
